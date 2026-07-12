@@ -158,3 +158,20 @@
     .btn{width:100%}
   }
   @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto;transition:none!important}}
+
+/* ---------- Live recorder control ---------- */
+.reccontrol{margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+.reclabel{display:block;font-family:'Sora';font-weight:600;font-size:13.5px;color:var(--ink);margin-bottom:9px}
+.recrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.recrow input{width:74px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:15px;font-family:inherit;background:var(--paper);text-align:center;font-weight:600}
+.recrow input:focus{outline:none;border-color:var(--violet-bright);background:var(--white)}
+.recunit{font-size:14px;font-weight:600;color:var(--ink-soft)}
+.recnote{font-size:13px;color:var(--muted);margin-left:4px}
+.recbar{margin-top:14px;height:8px;background:var(--paper-2);border-radius:100px;overflow:hidden}
+.recfill{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--teal));border-radius:100px;transition:width .3s}
+
+/* ---------- Share bar ---------- */
+.sharebar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:30px;padding-top:22px;border-top:1px dashed var(--line)}
+.sharelabel{font-family:'Sora';font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sharebar a{font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--white);border:1px solid var(--line);padding:8px 15px;border-radius:100px;transition:all .15s}
+.sharebar a:hover{border-color:var(--violet-bright);color:var(--violet);transform:translateY(-1px)}

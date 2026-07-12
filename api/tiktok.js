@@ -1,18 +1,14 @@
 // TokGhost backend — Vercel serverless function
-// Handles: profile lookup, video info, oEmbed.
-// Strategy: FREE tier uses TikTok's public oEmbed. PAID tier (optional) uses a
-// scraping API via env vars. This is the single spot where free -> paid upgrades.
+// Handles: profile lookup, video info via TikTok oEmbed (free) + optional paid API.
 //
-// Endpoint:  /api/tiktok?type=profile&u=username
-//            /api/tiktok?type=video&url=<tiktok video url>
-//
-// Deploy: drop this file in /api on Vercel. No build step needed.
+// Endpoints:
+//   /api/tiktok?type=video&url=<tiktok video url>
+//   /api/tiktok?type=profile&u=<username>
+//   /api/tiktok?type=debug&url=<tiktok video url>   <-- shows the real upstream error
 
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-  "(KHTML, like Gecko) Chrome/125.0 Safari/537.36";
-
-// ---- helpers -------------------------------------------------------------
+  "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
 
 function cleanUsername(raw = "") {
   let u = String(raw).trim().replace(/^@/, "");
@@ -21,92 +17,110 @@ function cleanUsername(raw = "") {
   return u.replace(/[^A-Za-z0-9._]/g, "").slice(0, 40);
 }
 
-function ok(res, data) {
+function send(res, code, body) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=600");
-  res.status(200).json({ ok: true, ...data });
+  res.status(code).json(body);
 }
 
-function fail(res, code, msg) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.status(code).json({ ok: false, error: msg });
-}
-
-// ---- data sources --------------------------------------------------------
-
-// FREE: TikTok official oEmbed. Works for a video URL. Returns author + thumbnail.
-// This is rate-limited by TikTok and is the fragile-but-free path.
+// Fetch oEmbed with a real browser UA + timeout. Returns { data } or { err }.
 async function oembed(videoUrl) {
   const api = `https://www.tiktok.com/oembed?url=${encodeURIComponent(videoUrl)}`;
-  const r = await fetch(api, { headers: { "User-Agent": UA } });
-  if (!r.ok) throw new Error(`oembed ${r.status}`);
-  return r.json();
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 9000);
+  try {
+    const r = await fetch(api, {
+      signal: ctrl.signal,
+      headers: {
+        "User-Agent": UA,
+        "Accept": "application/json,text/plain,*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.tiktok.com/",
+      },
+    });
+    const text = await r.text();
+    if (!r.ok) return { err: `TikTok returned HTTP ${r.status}`, status: r.status, body: text.slice(0, 300) };
+    try {
+      return { data: JSON.parse(text) };
+    } catch {
+      return { err: "TikTok returned non-JSON (likely a block page)", body: text.slice(0, 300) };
+    }
+  } catch (e) {
+    return { err: `Request failed: ${e.name === "AbortError" ? "timeout" : e.message}` };
+  } finally {
+    clearTimeout(t);
+  }
 }
 
-// PAID (optional): a scraping API. Wire your provider here and set env vars in
-// Vercel:  TIKTOK_API_URL  and  TIKTOK_API_KEY. Until you set them, this is skipped
-// and the app falls back to free/oEmbed. This is your upgrade path once revenue starts.
+// Optional paid provider. Set TIKTOK_API_URL + TIKTOK_API_KEY in Vercel env vars.
 async function paidProfile(username) {
   const base = process.env.TIKTOK_API_URL;
   const key = process.env.TIKTOK_API_KEY;
-  if (!base || !key) return null; // not configured yet -> free tier only
+  if (!base || !key) return null;
   const r = await fetch(`${base}?username=${encodeURIComponent(username)}`, {
-    headers: { "Authorization": `Bearer ${key}`, "User-Agent": UA },
+    headers: { Authorization: `Bearer ${key}`, "User-Agent": UA },
   });
-  if (!r.ok) throw new Error(`paid ${r.status}`);
+  if (!r.ok) return null;
   return r.json();
 }
-
-// ---- handler -------------------------------------------------------------
 
 export default async function handler(req, res) {
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
     return res.status(204).end();
   }
 
   const { type = "profile", u = "", url = "" } = req.query || {};
 
-  try {
-    if (type === "video") {
-      if (!/tiktok\.com/i.test(url)) return fail(res, 400, "Provide a valid TikTok video URL.");
-      const data = await oembed(url);
-      return ok(res, {
-        type: "video",
-        title: data.title || "",
-        author: data.author_name || "",
-        authorUrl: data.author_url || "",
-        thumbnail: data.thumbnail_url || "",
-        html: data.html || "",
-        // Note: watermark-free MP4 requires the paid API. oEmbed gives embed HTML only.
-        download: null,
+  // DEBUG: surfaces the real upstream error so we can see what TikTok actually said.
+  if (type === "debug") {
+    const target = url || "https://www.tiktok.com/@tiktok/video/7016181462140628225";
+    const out = await oembed(target);
+    return send(res, 200, { ok: true, type: "debug", target, result: out });
+  }
+
+  if (type === "video") {
+    if (!/tiktok\.com/i.test(url)) {
+      return send(res, 400, { ok: false, error: "Paste a valid TikTok video link." });
+    }
+    const { data, err, body } = await oembed(url);
+    if (err) {
+      return send(res, 502, {
+        ok: false,
+        error: "TikTok did not respond to this request.",
+        detail: err,
+        hint: body ? String(body).slice(0, 160) : undefined,
       });
     }
-
-    // profile
-    const username = cleanUsername(u || url);
-    if (!username) return fail(res, 400, "Enter a TikTok username.");
-
-    // Try paid provider first if configured (richer data), else free tier.
-    const paid = await paidProfile(username).catch(() => null);
-    if (paid) {
-      return ok(res, { type: "profile", username, source: "api", ...paid });
-    }
-
-    // FREE fallback: we can confirm the profile and link to it. Full stats
-    // (followers, video list) need the paid API. Be honest in the response.
-    return ok(res, {
-      type: "profile",
-      username,
-      source: "free",
-      profileUrl: `https://www.tiktok.com/@${username}`,
-      note:
-        "Free tier confirms the profile and links out. Full stats, videos, " +
-        "and watermark-free downloads require the data API (set TIKTOK_API_URL " +
-        "and TIKTOK_API_KEY in Vercel to enable).",
+    return send(res, 200, {
+      ok: true,
+      type: "video",
+      title: data.title || "",
+      author: data.author_name || "",
+      authorUrl: data.author_url || "",
+      thumbnail: data.thumbnail_url || "",
+      download: null, // watermark-free MP4 needs the paid API
     });
-  } catch (e) {
-    return fail(res, 502, "Could not reach TikTok right now. Try again shortly.");
   }
+
+  // profile
+  const username = cleanUsername(u || url);
+  if (!username) return send(res, 400, { ok: false, error: "Enter a TikTok username." });
+
+  const paid = await paidProfile(username).catch(() => null);
+  if (paid) {
+    return send(res, 200, { ok: true, type: "profile", username, source: "api", ...paid });
+  }
+
+  // Free tier: confirm + link out. Full stats need the paid API.
+  return send(res, 200, {
+    ok: true,
+    type: "profile",
+    username,
+    source: "free",
+    profileUrl: `https://www.tiktok.com/@${username}`,
+    note:
+      "Free tier links to the profile. Full stats, video lists and watermark-free " +
+      "downloads require the data API (set TIKTOK_API_URL and TIKTOK_API_KEY in Vercel).",
+  });
 }
