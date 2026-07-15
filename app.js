@@ -153,11 +153,25 @@
   const translated = ["/", "/tiktok-story-viewer"];
   const target = translated.includes(base) ? base : "/";
 
-  const langs = [
-    { code: "en", label: "English",          flag: "🇬🇧", href: target },
-    { code: "id", label: "Bahasa Indonesia", flag: "🇮🇩", href: "/id" + (target === "/" ? "" : target) },
-    { code: "tr", label: "Türkçe",           flag: "🇹🇷", href: "/tr" + (target === "/" ? "" : target) },
+  const LANGS = [
+    { code: "en", label: "English",          flag: "🇬🇧" },
+    { code: "id", label: "Bahasa Indonesia", flag: "🇮🇩" },
+    { code: "tr", label: "Türkçe",           flag: "🇹🇷" },
+    { code: "ar", label: "العربية",          flag: "🇸🇦" },
+    { code: "vi", label: "Tiếng Việt",       flag: "🇻🇳" },
+    { code: "es", label: "Español",          flag: "🇪🇸" },
+    { code: "it", label: "Italiano",         flag: "🇮🇹" },
+    { code: "th", label: "ไทย",              flag: "🇹🇭" },
+    { code: "ru", label: "Русский",          flag: "🇷🇺" },
+    { code: "fr", label: "Français",         flag: "🇫🇷" },
+    { code: "de", label: "Deutsch",          flag: "🇩🇪" },
+    { code: "ko", label: "한국어",            flag: "🇰🇷" },
+    { code: "pt", label: "Português",        flag: "🇵🇹" },
   ];
+  const langs = LANGS.map((l) => ({
+    ...l,
+    href: l.code === "en" ? target : "/" + l.code + (target === "/" ? "" : target),
+  }));
 
   const menu = document.createElement("div");
   menu.className = "langmenu";
