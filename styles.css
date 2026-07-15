@@ -199,3 +199,32 @@
   .rbtn{display:block;text-align:center}
   .rlink{margin-left:0;display:block;margin-top:14px}
 }
+
+/* ---------- Language switcher ---------- */
+.langwrap{position:relative}
+.langbtn{cursor:pointer}
+.langmenu{
+  position:absolute;top:calc(100% + 8px);right:0;min-width:190px;
+  background:var(--white);border:1px solid var(--line);border-radius:12px;
+  box-shadow:var(--shadow);padding:6px;z-index:60;display:none
+}
+.langmenu.open{display:block}
+.langmenu a{
+  display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:8px;
+  font-size:14.5px;font-weight:500;color:var(--ink-soft);transition:background .12s,color .12s
+}
+.langmenu a:hover{background:var(--paper-2);color:var(--violet)}
+.langmenu a.active{color:var(--violet);font-weight:600;background:var(--paper-2)}
+.langmenu .flag{font-size:16px;line-height:1}
+
+/* ---------- RTL support (Arabic) ---------- */
+[dir="rtl"] .inputwrap .at{left:auto;right:16px}
+[dir="rtl"] .toolcard input{padding:16px 34px 16px 16px}
+[dir="rtl"] .hint{flex-direction:row-reverse;text-align:right}
+[dir="rtl"] .trust div{flex-direction:row-reverse}
+[dir="rtl"] .step .num{margin-left:auto}
+[dir="rtl"] .safelist div{flex-direction:row-reverse;text-align:right}
+[dir="rtl"] summary{flex-direction:row-reverse;text-align:right}
+[dir="rtl"] .feat,[dir="rtl"] .step{text-align:right}
+[dir="rtl"] .langmenu{left:0;right:auto}
+[dir="rtl"] .langmenu a{flex-direction:row-reverse}

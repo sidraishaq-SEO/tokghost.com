@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>틱톡 뷰어: 프로필을 익명으로 보기, 무료 | TokGhost</title>
+<meta name="description" content="무료 틱톡 뷰어. 누구의 틱톡 프로필, 동영상, 팔로워든 익명으로 확인하세요. 로그인 없이, 계정 없이, 흔적 없이.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tokghost.com/ko">
+<link rel="alternate" hreflang="en" href="https://tokghost.com/">
+<link rel="alternate" hreflang="id" href="https://tokghost.com/id">
+<link rel="alternate" hreflang="tr" href="https://tokghost.com/tr">
+<link rel="alternate" hreflang="ar" href="https://tokghost.com/ar">
+<link rel="alternate" hreflang="vi" href="https://tokghost.com/vi">
+<link rel="alternate" hreflang="es" href="https://tokghost.com/es">
+<link rel="alternate" hreflang="it" href="https://tokghost.com/it">
+<link rel="alternate" hreflang="th" href="https://tokghost.com/th">
+<link rel="alternate" hreflang="ru" href="https://tokghost.com/ru">
+<link rel="alternate" hreflang="fr" href="https://tokghost.com/fr">
+<link rel="alternate" hreflang="de" href="https://tokghost.com/de">
+<link rel="alternate" hreflang="ko" href="https://tokghost.com/ko">
+<link rel="alternate" hreflang="pt" href="https://tokghost.com/pt">
+<link rel="alternate" hreflang="x-default" href="https://tokghost.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TokGhost">
+<meta property="og:title" content="틱톡 뷰어: 프로필을 익명으로 보기 — TokGhost">
+<meta property="og:description" content="무료 틱톡 뷰어. 누구의 틱톡 프로필, 동영상, 팔로워든 익명으로 확인하세요. 로그인 없이, 계정 없이, 흔적 없이.">
+<meta property="og:url" content="https://tokghost.com/ko">
+<link rel="icon" type="image/svg+xml" href="/tokghost-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a href="/ko" class="logo" aria-label="TokGhost">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 84 84" fill="none">
+          <path d="M42 16C27 16 18 27 18 42L18 64C18 67 21 68 23 66L28 61C29.5 59.5 32 59.5 33.5 61L37 64.5C38.5 66 41 66 42.5 64.5L46 61C47.5 59.5 50 59.5 51.5 61L56 66C58 68 61 67 61 64L61 42C61 27 57 16 42 16Z" fill="#7C5CFF"/>
+          <circle cx="34" cy="40" r="4.2" fill="#14121F"/><circle cx="50" cy="40" r="4.2" fill="#14121F"/>
+          <path d="M38 48 L52 55 L38 62 Z" fill="#00D9C0"/>
+        </svg></span>
+      <span>Tok<span class="g">Ghost</span></span>
+    </a>
+    <nav class="navlinks">
+      <a href="/ko/tiktok-story-viewer">스토리</a>
+      <a href="/tiktok-video-downloader">다운로드</a>
+      <a href="/tiktok-live-viewer">라이브</a>
+      <button class="langbtn" aria-label="Language">&#127760; KO</button>
+    </nav>
+    <button class="menutoggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <h1>틱톡 뷰어: <span class="hl">프로필을 익명으로 보기</span></h1>
+    <p class="sub">계정 없이 작동하는 무료 틱톡 뷰어입니다. 아무 사용자 이름이나 입력해 동영상, 팔로워, 댓글을 둘러보세요. 프로필 주인은 절대 알 수 없습니다.</p>
+    <div class="toolcard">
+      <div class="field">
+        <div class="inputwrap">
+          <span class="at" aria-hidden="true">@</span>
+          <input id="tokInput" type="text" placeholder="사용자 이름  또는  https://www.tiktok.com/@username" aria-label="TikTok" autocomplete="off">
+        </div>
+        <button class="btn paste" id="pasteBtn" type="button">Paste</button>
+        <button class="btn" id="viewBtn" type="button">프로필 보기</button>
+      </div>
+      <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> @사용자이름, 사용자 이름 또는 틱톡 프로필 링크로 작동합니다.</div>
+      <div class="chips"><a class="chip" href="/ko/tiktok-story-viewer">스토리 보기</a><a class="chip" href="/tiktok-video-downloader">동영상 다운로드</a><a class="chip" href="/tiktok-live-viewer">라이브 보기</a></div>
+    </div>
+    <div class="trust"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 계정 불필요</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 데이터 미저장</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 빠르고 무료</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 안전하고 비공개</div></div>
+  </div>
+</section>
+<section class="block wrap"><h2>세 단계로 사용하기</h2><div class="steps"><div class="step"><div class="num">1</div><h3>사용자 이름 입력</h3><p>@사용자이름을 입력하거나 위 칸에 틱톡 프로필 링크를 붙여넣으세요.</p></div><div class="step"><div class="num">2</div><h3>프로필 보기 누르기</h3><p>TokGhost는 공개 프로필을 회원님 계정이 아닌 저희 서버를 통해 불러오므로 흔적이 남지 않습니다.</p></div><div class="step"><div class="num">3</div><h3>둘러보고 다운로드</h3><p>동영상, 팔로워, 댓글을 보고 워터마크 없이 HD로 저장하세요.</p></div></div></section>
+<section class="block wrap"><h2>할 수 있는 모든 것</h2><p class="lead">번거로운 광고 없이 공개 틱톡 콘텐츠를 보고 저장하는 깔끔한 도구입니다.</p><div class="feats"><div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h3>익명 프로필 보기</h3><p>아무 공개 프로필이나 열어보세요. 주인에게 알림이 가지 않습니다.</p></div><div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h3>워터마크 없는 다운로드</h3><p>동영상을 HD로, 이미지를 고화질로 로고 없이 저장하세요.</p></div><div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h3>전체 통계</h3><p>팔로워, 팔로잉, 좋아요, 조회수를 한눈에 확인하세요.</p></div><div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h3>스토리와 리포스트</h3><p>공개 스토리가 24시간 후 사라지기 전에 보세요.</p></div><div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h3>모든 기기</h3><p>설치 없이 어떤 브라우저에서도 작동합니다.</p></div><div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h3>무료 무제한</h3><p>원하는 만큼 많은 계정을 무료로 확인하세요.</p></div></div></section>
+<section class="block wrap"><div class="safety"><h2>회원님의 개인정보가 최우선</h2><p class="lead">TokGhost는 공개 틱톡 데이터에만 접근하며 로그인을 요구하지 않습니다.</p><div class="safelist"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 모든 요청 SSL 암호화</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 개인정보 미저장</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 틱톡 로그인 불필요</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 공개 콘텐츠만</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 기록 미저장</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> DMCA 준수</div></div></div></section>
+<section class="block wrap"><h2>자주 묻는 질문</h2><div class="faq"><details open><summary>제가 프로필을 본 걸 상대가 알 수 있나요? <span class="pm"></span></summary><div class="ans">아니요. 틱톡은 누가 프로필을 봤는지 알려주지 않으며, TokGhost는 자체 서버로 모든 것을 불러옵니다. 방문 기록은 회원님과 연결되지 않습니다.</div></details><details><summary>틱톡 계정이 필요한가요? <span class="pm"></span></summary><div class="ans">아니요. 로그인하지 않습니다. 사용자 이름이나 링크를 입력하고 바로 보세요.</div></details><details><summary>무료인가요? <span class="pm"></span></summary><div class="ans">네. 모든 기능이 제한 없이 무료이며 구독이 필요 없습니다.</div></details><details><summary>비공개 계정을 볼 수 있나요? <span class="pm"></span></summary><div class="ans">아니요. 공개 프로필과 콘텐츠만 접근할 수 있습니다.</div></details><details><summary>어떤 기기에서 작동하나요? <span class="pm"></span></summary><div class="ans">안드로이드, 아이폰, 윈도우, 맥을 포함해 브라우저가 있는 모든 기기에서 작동합니다.</div></details></div></section>
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand"><div class="logo"><span class="mark" aria-hidden="true"><svg viewBox="0 0 84 84" fill="none">
+          <path d="M42 16C27 16 18 27 18 42L18 64C18 67 21 68 23 66L28 61C29.5 59.5 32 59.5 33.5 61L37 64.5C38.5 66 41 66 42.5 64.5L46 61C47.5 59.5 50 59.5 51.5 61L56 66C58 68 61 67 61 64L61 42C61 27 57 16 42 16Z" fill="#7C5CFF"/>
+          <circle cx="34" cy="40" r="4.2" fill="#14121F"/><circle cx="50" cy="40" r="4.2" fill="#14121F"/>
+          <path d="M38 48 L52 55 L38 62 Z" fill="#00D9C0"/>
+        </svg></span><span>Tok<span class="g">Ghost</span></span></div><p>공개 틱톡 콘텐츠를 익명으로 보고 다운로드하는 방법.</p></div>
+      <div class="fcol"><h4>Tools</h4><a href="/ko/tiktok-story-viewer">스토리 보기</a><a href="/tiktok-video-downloader">동영상 다운로드</a><a href="/tiktok-live-viewer">라이브 보기</a></div>
+      <div class="fcol"><h4>Info</h4><a href="/about-us">소개</a><a href="/privacy-policy">개인정보처리방침</a><a href="/contact">문의</a></div>
+      <div class="fcol"><h4>Language</h4><a href="/">English</a><a href="/id">Bahasa Indonesia</a><a href="/tr">Türkçe</a><a href="/ar">العربية</a><a href="/vi">Tiếng Việt</a><a href="/es">Español</a></div>
+    </div>
+    <div class="fbottom"><span>&copy; 2026 TokGhost</span></div>
+    <p class="disclaimer">TokGhost는 독립적으로 운영되며 TikTok 또는 ByteDance와 제휴, 보증, 후원 관계가 없습니다. TikTok이라는 이름은 참조 및 식별 목적으로만 사용됩니다.</p>
+  </div>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

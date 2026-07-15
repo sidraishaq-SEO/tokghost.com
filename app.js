@@ -127,3 +127,67 @@
     if (f) f.scrollIntoView({ behavior: "smooth" });
   });
 })();
+
+// ---------- Language switcher ----------
+(function () {
+  const btn = document.querySelector(".langbtn");
+  if (!btn) return;
+
+  // Wrap the button so the menu can position against it
+  let wrap = btn.parentElement;
+  if (!wrap.classList.contains("langwrap")) {
+    wrap = document.createElement("span");
+    wrap.className = "langwrap";
+    btn.parentNode.insertBefore(wrap, btn);
+    wrap.appendChild(btn);
+  }
+
+  // Work out which page we are on, stripped of any language prefix
+  const path = location.pathname.replace(/\.html$/, "");
+  const m = path.match(/^\/(id|tr)(\/.*)?$/);
+  const current = m ? m[1] : "en";
+  const base = m ? (m[2] || "/") : (path || "/");
+
+  // Only the homepage and story viewer have translations so far.
+  // For any other page, the language links point at that language's homepage.
+  const translated = ["/", "/tiktok-story-viewer"];
+  const target = translated.includes(base) ? base : "/";
+
+  const langs = [
+    { code: "en", label: "English",          flag: "🇬🇧", href: target },
+    { code: "id", label: "Bahasa Indonesia", flag: "🇮🇩", href: "/id" + (target === "/" ? "" : target) },
+    { code: "tr", label: "Türkçe",           flag: "🇹🇷", href: "/tr" + (target === "/" ? "" : target) },
+  ];
+
+  const menu = document.createElement("div");
+  menu.className = "langmenu";
+  menu.setAttribute("role", "menu");
+  menu.innerHTML = langs
+    .map(
+      (l) =>
+        `<a href="${l.href}" role="menuitem"${l.code === current ? ' class="active"' : ""}>` +
+        `<span class="flag" aria-hidden="true">${l.flag}</span>${l.label}</a>`
+    )
+    .join("");
+  wrap.appendChild(menu);
+
+  btn.setAttribute("aria-haspopup", "true");
+  btn.setAttribute("aria-expanded", "false");
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = menu.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
+  document.addEventListener("click", () => {
+    menu.classList.remove("open");
+    btn.setAttribute("aria-expanded", "false");
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      menu.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+})();
